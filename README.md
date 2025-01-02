@@ -14,7 +14,7 @@ The game ends when one player's health reaches zero, and the winner is announced
 ## Installing Pygame
 To install the Pygame library, you can use pip:<br>
 <br>
-![image](https://github.com/user-attachments/assets/ec08e481-e0ca-4bdb-84ec-7107f7e68e2c)
+![image](https://github.com/user-attachments/assets/01e7ef16-a2a4-4464-bd67-5a3c9c041281)
 <br>
 ## File Structure
 ![image](https://github.com/user-attachments/assets/1fcf2dd8-bfce-43a3-a736-53c31e797b5c)<br>
@@ -38,13 +38,18 @@ The main game loop, where the players' actions are processed, animations are dis
 ## How to Play
 <b>Start the Game:</b><br><br> When the game begins, a countdown appears, and once it hits "Fight!", the match starts.<br>
 <br>
-ADD IMAGE HERE <br><br>
 <b>Control your Fighter:</b><br><br> Use the keyboard controls to move, jump, and attack your opponent.<br>
 <br>
-ADD IMAGE HERE<br><br>
+![battle_game 2024-12-20 11_28_08 AM](https://github.com/user-attachments/assets/b5d0fdfc-d074-4177-bc51-982e218e8bb5)
+<br>
+![battle_game 2024-12-20 11_29_12 AM](https://github.com/user-attachments/assets/f5b3fc81-4e8b-4de8-a812-74f7666beaee)
+<br>
+![battle_game 2024-12-20 11_30_35 AM](https://github.com/user-attachments/assets/9ab2ad12-2b2a-427d-82fe-dfcd60c6733a)
+<br><br>
 <b>Winning:</b><br><br> The game ends when one player's health reaches zero. The winner is displayed on the screen.<br>
 <br>
-ADD IMAGE HERE<br>
+![battle_game 2024-12-20 11_31_19 AM](https://github.com/user-attachments/assets/71860a1a-33ac-4295-885c-ab682de797d9)
+<br>
 ## Code Explanation
 ### Fighter Class (fighter.py)
 The Fighter Class defines the core logic for each fighter, including:<br>
@@ -62,15 +67,18 @@ The Fighter Class defines the core logic for each fighter, including:<br>
 ## How to Run the Game
 Clone the repository<br>
 <br>
-ADD IMAGE HERE<br><br>
+![image](https://github.com/user-attachments/assets/464270c2-259f-457a-8011-9ae317ec5b14)
+<br><br>
 Navigate to the game folder<br>
 <br>
-ADD IMAGE HERE<br><br>
-Run the game<br>
-<br>
-ADD IMAGE HERE<br>
+![image](https://github.com/user-attachments/assets/40c4fda5-36fb-4a6d-89a0-5db41067fac4)
+<br><br>
+Finally, run the main.py file
 ## Notes
-* You may need to add your own sprite images and background images to the assets/ folder.
+* You may add your own sprite images and background images to the assets folder if you want to.
 * The game runs at 70 frames per second and supports two players on the same keyboard.
 ## License
 This project is open-source and available under the MIT License.
+## Credits
+Coding with Russ (Youtube)<br>
+luizmelo.itch.io
