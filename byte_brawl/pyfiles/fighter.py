@@ -1,5 +1,4 @@
 import pygame
-print("Importing this file...")
 
 
 class Fighter:
