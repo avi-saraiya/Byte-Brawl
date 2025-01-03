@@ -2,7 +2,7 @@ import pygame
 
 
 class Fighter:
-    def __init__(self, player, x, y, flip, character_data, spritesheet, animation_frames): # NOT SURE WHY BUT THIS MUST BE x or y (has something to do with the 'rect' keyword I believe)
+    def __init__(self, player, x, y, flip, character_data, spritesheet, animation_frames):
         self.player = player
         self.sprite_height = character_data[0]
         self.sprite_width = character_data[1]
