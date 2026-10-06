@@ -116,8 +116,6 @@ The executable is created in the `dist` folder. PyInstaller builds for the opera
 ## Notes
 * You may add your own sprite images and background images to the assets folder if you want to.
 * The game runs at 70 frames per second and supports two players on the same keyboard.
-## License
-This project is open-source and available under the MIT License.
 ## Credits
 Coding with Russ (Youtube)<br>
 luizmelo.itch.io
