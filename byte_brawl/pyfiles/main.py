@@ -1,5 +1,12 @@
+import os
+import sys
 import pygame
 from fighter import Fighter
+
+# Function for finding asset files whether running from source or from a PyInstaller bundle
+def resource_path(rel_path):
+    base = getattr(sys, "_MEIPASS", os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+    return os.path.join(base, rel_path)
 
 pygame.init()
 
@@ -8,14 +15,14 @@ SCREEN_HEIGHT = 700
 
 # set up screen window
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("battle_game")
+pygame.display.set_caption("Byte Brawl")
 
 #Create background image
-bg_image = pygame.image.load("assets/background_image.png").convert_alpha()
+bg_image = pygame.image.load(resource_path("assets/background_image.png")).convert_alpha()
 
 # Loading spritesheets
-martial_hero = pygame.image.load("assets/MartialHero.png").convert_alpha()
-evil_wizard = pygame.image.load("assets/EvilWizard.png").convert_alpha()
+martial_hero = pygame.image.load(resource_path("assets/MartialHero.png")).convert_alpha()
+evil_wizard = pygame.image.load(resource_path("assets/EvilWizard.png")).convert_alpha()
 
 # Defining the number of action animation frames in a list for each character
 martial_hero_frames = [4, 4, 7, 8, 3]
