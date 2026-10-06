@@ -44,12 +44,12 @@ def show_hp(health, x, y):
 clock = pygame.time.Clock()
 fps = 70
 
-#Defining game variables for starting countdown
-starter_count = 3
-time_last_updated = pygame.time.get_ticks()
-
-# Getting font to be used using a built-in python
+# Getting fonts to be used using a built-in python
 countdown_font = pygame.font.SysFont("Arial", 80)
+menu_font = pygame.font.SysFont("Arial", 40)
+
+# Defining how long to wait after a fighter dies before showing the menu
+menu_delay = 1500 # In milliseconds
 
 # Defining function to display starting countdown
 def draw_countdown(text, font, text_col, x, y):
@@ -68,9 +68,38 @@ evil_wizard_scale = 4
 evil_wizard_offset = [72, 56]
 evil_wizard_data = [evil_wizard_frame_height, evil_wizard_frame_width, evil_wizard_scale, evil_wizard_offset]
 
-# Creating instances of the fighter class from the fighter.py file
-player1 = Fighter(1, 200, 410, False, martial_hero_data, martial_hero, martial_hero_frames) 
-player2 = Fighter(2, 900, 410, True, evil_wizard_data, evil_wizard, evil_wizard_frames) 
+# Function for drawing the end of fight menu, returns the button rects for mouse clicks
+def draw_menu(winner_text, selection):
+    overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
+    overlay.fill((0, 0, 0, 150))
+    screen.blit(overlay, (0, 0))
+    winner_img = countdown_font.render(winner_text, True, (255, 0, 0))
+    screen.blit(winner_img, winner_img.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3)))
+    buttons = []
+    for i, label in enumerate(["Restart", "Exit"]):
+        button = pygame.Rect(0, 0, 300, 70)
+        button.center = (SCREEN_WIDTH / 2, 380 + i * 90)
+        if i == selection:
+            pygame.draw.rect(screen, (255, 0, 0), button)
+        else:
+            pygame.draw.rect(screen, (60, 60, 60), button)
+        pygame.draw.rect(screen, (255, 255, 255), button, 3)
+        label_img = menu_font.render(label, True, (255, 255, 255))
+        screen.blit(label_img, label_img.get_rect(center=button.center))
+        buttons.append(button)
+    return buttons
+
+# Function for starting a new fight, creates fresh instances of the fighter class from the fighter.py file
+def reset_game():
+    player1 = Fighter(1, 200, 410, False, martial_hero_data, martial_hero, martial_hero_frames)
+    player2 = Fighter(2, 900, 410, True, evil_wizard_data, evil_wizard, evil_wizard_frames)
+    starter_count = 3
+    time_last_updated = pygame.time.get_ticks()
+    round_over_time = None
+    menu_selection = 0
+    return player1, player2, starter_count, time_last_updated, round_over_time, menu_selection
+
+player1, player2, starter_count, time_last_updated, round_over_time, menu_selection = reset_game()
 
 run = True
 #Create game loop
@@ -108,15 +137,55 @@ while run:
     player2.draw_character(screen)
 
     #Check to see if game over
-    if player1.alive == False:
-         draw_countdown("Player 2 wins !", countdown_font, (255, 0, 0), (SCREEN_WIDTH / 2) - 200, SCREEN_HEIGHT / 3)
-    if player2.alive == False:
-         draw_countdown("Player 1 wins !", countdown_font, (255, 0, 0), (SCREEN_WIDTH / 2) - 200, SCREEN_HEIGHT / 3)
+    winner_text = None
+    if player1.alive == False and player2.alive == False:
+        winner_text = "Draw !"
+    elif player1.alive == False:
+        winner_text = "Player 2 wins !"
+    elif player2.alive == False:
+        winner_text = "Player 1 wins !"
+
+    # Show the winner text, then the menu once the death animation has had time to play
+    show_menu = False
+    menu_buttons = []
+    if winner_text != None:
+        if round_over_time == None:
+            round_over_time = pygame.time.get_ticks()
+        if (pygame.time.get_ticks() - round_over_time) >= menu_delay:
+            show_menu = True
+            menu_buttons = draw_menu(winner_text, menu_selection)
+        else:
+            winner_img = countdown_font.render(winner_text, True, (255, 0, 0))
+            screen.blit(winner_img, winner_img.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3)))
 
     #Event handler
+    menu_choice = None
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+        elif show_menu:
+            # Highlight whichever button the mouse is over
+            if event.type == pygame.MOUSEMOTION:
+                for i, button in enumerate(menu_buttons):
+                    if button.collidepoint(event.pos):
+                        menu_selection = i
+            # Choose a button by clicking it
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                for i, button in enumerate(menu_buttons):
+                    if button.collidepoint(event.pos):
+                        menu_choice = i
+            # Move between buttons with W/S or the arrow keys, choose with Enter or Space
+            elif event.type == pygame.KEYDOWN:
+                if event.key in (pygame.K_w, pygame.K_UP, pygame.K_s, pygame.K_DOWN):
+                    menu_selection = 1 - menu_selection
+                elif event.key in (pygame.K_RETURN, pygame.K_KP_ENTER, pygame.K_SPACE):
+                    menu_choice = menu_selection
+
+    # Acting on the menu choice: 0 = restart the fight, 1 = exit the game
+    if menu_choice == 0:
+        player1, player2, starter_count, time_last_updated, round_over_time, menu_selection = reset_game()
+    elif menu_choice == 1:
+        run = False
 
     #Update display
     pygame.display.update()
